@@ -1,4 +1,5 @@
-package exp.data; 
+package exp.data;
+
 import java.util.*;
 
 /**
@@ -36,14 +37,19 @@ public class Spectrum {
 	/**
 	 * file index
 	 */
-	private int fileID; 	
-	
+	private int fileID;
+
+	/**
+	 * file title (filename.scan.scan.charge)
+	 */
+	private String title;
+
 	/**
 	 * get the maximum intensity peak among all peaks 
 	 * @param null 
 	 * @return Peak 
 	 */
-	
+
 	public Peak getMaxIntensityPeak() {
 		Peak maxPeak = null;
 		double maxInt = Double.MIN_VALUE;
@@ -59,13 +65,12 @@ public class Spectrum {
 		return maxPeak;
 	}
 
-	
 	/**
 	 * Get the number of peaks
 	 * @param null 
 	 * @return peakinfo(list) size.
 	 */
-	
+
 	public int getPeakCount() {
 		return peakinfo.size();
 	}
@@ -85,7 +90,7 @@ public class Spectrum {
 		}
 		return filteredList;
 	}
-	
+
 	/**
 	 * Extract top N peak List.  (not considering isotope) 
 	 * @param n - number of top N 
@@ -94,35 +99,34 @@ public class Spectrum {
 	public List<Peak> topN(int n) {
 		List<Peak> topList = new ArrayList<>();
 		int num = 0;
-		
+
 		List<Peak> temp = peakinfo;
 		//sorting using comparator.  descending sort by intensity
 		CompareInt comp = new CompareInt();
 		Collections.sort(temp, comp);
 
-		for(int i=0; i<n; i++) {
+		for (int i = 0; i < n; i++) {
 			topList.add(temp.get(i));
 		}
 
 		return topList;
 	}
-	
+
 	/**
 	 * Predict Isotope Cluster - Not implemented yet.
 	 * - Under study
 	 * @param double error_tolerance 
 	 * 
-	 */	
+	 */
 	private List<IsoCluster> predictIsotopeCluster(double error_tolerance) {
 		System.out.println("Not implemented yet.");
 		return null;
 	}
 
-		
-//	public IsoCluster getIsotopeCluster(double mass, int charge, double error_tolerance) {
-//		System.out.println("Not implemented yet.");
-//		return null;
-//	}
+	//	public IsoCluster getIsotopeCluster(double mass, int charge, double error_tolerance) {
+	//		System.out.println("Not implemented yet.");
+	//		return null;
+	//	}
 	/**
 	 * Get scan number 
 	 * @param null
@@ -131,7 +135,6 @@ public class Spectrum {
 	public int getScanID() {
 		return scanID;
 	}
-
 
 	protected void setScanID(int scanID) {
 		this.scanID = scanID;
@@ -146,7 +149,6 @@ public class Spectrum {
 		return peakinfo;
 	}
 
-	
 	protected void setPeakinfo(List<Peak> peakinfo) {
 		this.peakinfo = peakinfo;
 	}
@@ -156,11 +158,10 @@ public class Spectrum {
 	 * @param null
 	 * @return double TIC 
 	 */
-	
+
 	public double getTIC() {
 		return TIC;
 	}
-
 
 	protected void setTIC(double tIC) {
 		TIC = tIC;
@@ -171,11 +172,10 @@ public class Spectrum {
 	 * @param null
 	 * @return double retention time   
 	 */
-	
+
 	public double getRT() {
 		return RT;
 	}
-
 
 	protected void setRT(double rT) {
 		RT = rT;
@@ -186,34 +186,39 @@ public class Spectrum {
 	 * @param null
 	 * @return int ms level   
 	 */
-	
+
 	public int getMSLevel() {
 		return msLevel;
 	}
-
 
 	protected void setMSLevel(int msLevel) {
 		this.msLevel = msLevel;
 	}
 
-
 	public int getParentInfo() {
 		return parentInfo;
 	}
 
-
 	protected void setParentInfo(int parentInfo) {
 		this.parentInfo = parentInfo;
 	}
-	
-	protected void setFileID(int fileID){
-		this.fileID=fileID;
+
+	protected void setFileID(int fileID) {
+		this.fileID = fileID;
 	}
-	
-	public int getFileID()
-	{
+
+	public int getFileID() {
 		return this.fileID;
 	}
+
+	public void setTitle(String line) {
+		this.title = line;
+	}
+
+	public String getTitle(String line) {
+		return this.title;
+	}
+
 	/** 
 	 * Calculate Total Ion Current(TIC).
 	 * @param List<peak> list - all peak list in a spectrum 
@@ -226,13 +231,14 @@ public class Spectrum {
 		}
 		return sum;
 	}
-	
+
 }
+
 /**
  * sort peak list based on intensity 
  */
 class CompareInt implements Comparator<Peak> {
-	
+
 	public int compare(Peak first, Peak second) {
 		double firstInt = first.intensity;
 		double secondInt = second.intensity;
