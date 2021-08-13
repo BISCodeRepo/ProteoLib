@@ -43,6 +43,10 @@ public class Spectrum {
 	 * file title (filename.scan.scan.charge)
 	 */
 	private String title;
+	/**
+	 * Peptide mass information - Precursor m/z intensity (PEPMASS= ...)
+	 */
+	private String PepMassInfo;
 
 	/**
 	 * get the maximum intensity peak among all peaks 
@@ -216,6 +220,14 @@ public class Spectrum {
 	}
 
 	public String getTitle(String line) {
+		return this.title;
+	}
+	
+	public void setPepMassInfo(String line) {
+		this.title = line;
+	}
+
+	public String getPepMassInfo(String line) {
 		return this.title;
 	}
 

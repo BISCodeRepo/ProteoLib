@@ -150,6 +150,8 @@ public class Spectra {
 				specList.add(spectrum);
 			} else if (line.contains("TITLE=")) {
 				spectrum.setTitle(line.split(" ")[0].split("=")[1]);
+			} else if (line.contains("PEPMASS=")) {
+				spectrum.setPepMassInfo(line.split("=")[1]);
 			} else if (line.contains("RTINSECONDS")) {
 				String[] tok = line.split("=");
 				spectrum.setRT(Double.parseDouble(tok[1]));
