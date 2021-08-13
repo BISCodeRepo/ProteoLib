@@ -78,7 +78,7 @@ public class Spectra {
 		sizeOfFiles = 0;
 		for (File file : files) {
 			sizeOfFiles++;
-			String fileName = file.getName();
+			String fileName = file.getName().toLowerCase();
 			fileNames[sizeOfFiles] = fileName;
 			if (fileName.endsWith(".mgf")) {
 				setFileformat("mgf");
@@ -87,7 +87,7 @@ public class Spectra {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			} else if (fileName.endsWith(".mzXML")) {
+			} else if (fileName.endsWith(".mzxml")) {
 				setFileformat("mzxml");
 				try {
 					readMZXML(file);
