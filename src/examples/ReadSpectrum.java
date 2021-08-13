@@ -6,7 +6,7 @@ import exp.data.Spectra;
 import exp.data.Spectrum;
 
 public class ReadSpectrum {
-
+	
 	public static void main(String[] args) throws IOException {
 		String spectrumFileName = "";
 		
@@ -18,9 +18,6 @@ public class ReadSpectrum {
 		for(int i=0; i<size; i++) {
 			Spectrum spectrum = spectra.getSpectrumByIndex(i);
 			
-			if(i == 0) {
-				System.exit(1);
-			}
 		}
 	}
 }
