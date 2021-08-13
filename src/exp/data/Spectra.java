@@ -148,11 +148,11 @@ public class Spectra {
 				spectraByFileScan.put(key, mappedSpectra);
 
 				specList.add(spectrum);
-
+			} else if (line.contains("TITLE=")) {
+				spectrum.setTitle(line.split(" ")[0].split("=")[1]);
 			} else if (line.contains("RTINSECONDS")) {
 				String[] tok = line.split("=");
 				spectrum.setRT(Double.parseDouble(tok[1]));
-
 			} else if (p.matcher(line.substring(0, 1)).find()) {
 				Peak peak = new Peak();
 				String[] tok = line.split(" ");
@@ -344,9 +344,9 @@ public class Spectra {
 		this.fileformat = fileformat;
 	}
 
-//	private void setSpecList(List<Spectrum> specList) {
-//		this.specList = specList;
-//	}
+	//	private void setSpecList(List<Spectrum> specList) {
+	//		this.specList = specList;
+	//	}
 
 	/**
 	 * Get the list of spectrum which contains all the spectra in the files
@@ -354,9 +354,9 @@ public class Spectra {
 	 * @return list of spectrum
 	 */
 
-//	public List<Spectrum> getSpecList() {
-//		return specList;
-//	}
+	//	public List<Spectrum> getSpecList() {
+	//		return specList;
+	//	}
 
 	/**
 	 * Return the spectrum with the corresponding scan title among all spectra
