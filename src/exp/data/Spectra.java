@@ -27,24 +27,23 @@ import org.systemsbiology.jrap.stax.ScanHeader;
 public class Spectra {
 
 	/**
-	 * list of file names 
+	 * list of file names
 	 */
 	private String[] fileNames = null; // unuse the first index.
 	/**
-	 * the number of files 
+	 * the number of files
 	 */
 	private int sizeOfFiles = 0;
 	/**
-	 * the file format of the processed files 
+	 * the file format of the processed files
 	 */
 	private String fileformat;
 	/**
-	 * list of spectrum 
+	 * list of spectrum
 	 */
 	private List<Spectrum> specList = new ArrayList<Spectrum>();
 	private Hashtable<String, ArrayList<Spectrum>> spectraByFileScan = new Hashtable<String, ArrayList<Spectrum>>();
-	private Hashtable<String, Spectrum> spectrumByTitle = new Hashtable<String,Spectrum>();
-	
+	private Hashtable<String, Spectrum> spectrumByTitle = new Hashtable<String, Spectrum>();
 
 	/**
 	 * get spectrum by index. <br>
@@ -54,57 +53,56 @@ public class Spectra {
 	 * @param index
 	 * @return
 	 */
-	public Spectrum getSpectrumByIndex (int index) {
+	public Spectrum getSpectrumByIndex(int index) {
 		// check index bound.
-		if(index < 0 || this.specList.size() < index) return null;
-		
+		if (index < 0 || this.specList.size() < index)
+			return null;
+
 		Spectrum spectrum = this.specList.get(index);
 		return spectrum;
 	}
-	
-	
+
 	/**
-	 * Get the number of spectra in the list of MS scan files 
+	 * Get the number of spectra in the list of MS scan files
 	 * 
 	 * @param null
-	 * @return spectrum count 
+	 * @return spectrum count
 	 */
-	
+
 	public int getSize() {
 		return specList.size();
 	}
 
 	/**
-	 * Read MS scan files and store them to the list of spectrum  
+	 * Read MS scan files and store them to the list of spectrum
 	 * 
-	 * @param path directory path or a specific file path 
+	 * @param path directory path or a specific file path
 	 * @return void
 	 */
-	
+
 	public void readFiles(String path) {
 		String readpath = path;
 
 		File[] files = new File(readpath).listFiles();
-		
-		if(files == null) {
+		if (files == null) {
 			files = new File[1];
 			files[0] = new File(readpath);
 		}
-		fileNames = new String[files.length+1];
-		
+		fileNames = new String[files.length + 1];
+
 		sizeOfFiles = 0;
 		for (File file : files) {
 			sizeOfFiles++;
-			String fileName = file.getName().toLowerCase();
+			String fileName = file.getName();
 			fileNames[sizeOfFiles] = fileName;
-			if (fileName.endsWith(".mgf")) {
+			if (fileName.toLowerCase().endsWith(".mgf")) {
 				setFileformat("mgf");
 				try {
 					readMGF(file);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			} else if (fileName.endsWith(".mzxml")) {
+			} else if (fileName.toLowerCase().endsWith(".mzxml")) {
 				setFileformat("mzxml");
 				try {
 					readMZXML(file);
@@ -118,17 +116,17 @@ public class Spectra {
 		}
 	}
 
-	/** 
-	 * Parse a mgf file and save the spectra to the list of spectrum.
-	 * MGF file format grammar
-	 * http://kirchnerlab.github.io/libmgf/doc/html/index.html
-	 * @param File file 
+	/**
+	 * Parse a mgf file and save the spectra to the list of spectrum. MGF file
+	 * format grammar http://kirchnerlab.github.io/libmgf/doc/html/index.html
+	 * 
+	 * @param File file
 	 * @return void
 	 */
 	private void readMGF(File file) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line;
-		Spectrum spectrum=null;
+		Spectrum spectrum = null;
 		Pattern p = Pattern.compile("(^[0-9]$)");
 		boolean scanCheck = false;
 
@@ -141,13 +139,14 @@ public class Spectra {
 				spectrum.setMSLevel(2);
 				spectrum.setParentInfo(-1);
 				spectrum.setTIC(spectrum.TICSum(spectrum.getPeakinfo()));
-				
-				String key = fileNames[sizeOfFiles]+"_"+spectrum.getScanID();
+
+				String key = fileNames[sizeOfFiles] + "_" + spectrum.getScanID();
 				ArrayList<Spectrum> mappedSpectra = spectraByFileScan.get(key);
-				if(mappedSpectra == null) mappedSpectra = new ArrayList<Spectrum>();
+				if (mappedSpectra == null)
+					mappedSpectra = new ArrayList<Spectrum>();
 				mappedSpectra.add(spectrum);
 				spectraByFileScan.put(key, mappedSpectra);
-				
+
 				specList.add(spectrum);
 
 			} else if (line.contains("RTINSECONDS")) {
@@ -157,8 +156,8 @@ public class Spectra {
 			} else if (p.matcher(line.substring(0, 1)).find()) {
 				Peak peak = new Peak();
 				String[] tok = line.split(" ");
-				peak.mass=(Double.parseDouble(tok[0]));
-				peak.intensity=(Double.parseDouble(tok[1]));
+				peak.mass = (Double.parseDouble(tok[0]));
+				peak.intensity = (Double.parseDouble(tok[1]));
 				spectrum.getPeakinfo().add(peak);
 			} else {
 				findScanNum(spectrum, line, scanCheck);
@@ -167,12 +166,12 @@ public class Spectra {
 		br.close();
 	}
 
-	/** 
-	 * Parse a *mzXML file and save the spectra to the list of spectrum.
-	 * Using jrap
+	/**
+	 * Parse a *mzXML file and save the spectra to the list of spectrum. Using jrap
 	 * http://javaprotlib.sourceforge.net/javadoc/jrap/rel1.2/
 	 * http://maltcms.de/staging/maltcms/maltcms-io-mzxml/apidocs/org/systemsbiology/jrap/staxnxt/ScanHeader.html
-	 * @param File file 
+	 * 
+	 * @param File file
 	 * @return void
 	 */
 	private void readMZXML(File file) throws IOException {
@@ -186,14 +185,14 @@ public class Spectra {
 
 			Scan scan = parser.rap(scanNum);
 			ScanHeader shead = scan.getHeader();
-			
+
 			spectrum.setScanID(scanNum);
 
 			double[][] massAndintencity = scan.getMassIntensityList();
 			for (int i = 0; i < massAndintencity[0].length; i++) {
 				Peak peak = new Peak();
-				peak.mass=(massAndintencity[0][i]);
-				peak.intensity=(massAndintencity[1][i]);
+				peak.mass = (massAndintencity[0][i]);
+				peak.intensity = (massAndintencity[1][i]);
 				spectrum.getPeakinfo().add(peak);
 			}
 
@@ -205,13 +204,14 @@ public class Spectra {
 
 			if (spectrum.getMSLevel() == 1) {
 				spectrum.setParentInfo(-1);
-			}else {
+			} else {
 				spectrum.setParentInfo(shead.getPrecursorScanNum());
 			}
-			
-			String key = fileNames[sizeOfFiles]+"_"+spectrum.getScanID();
+
+			String key = fileNames[sizeOfFiles] + "_" + spectrum.getScanID();
 			ArrayList<Spectrum> mappedSpectra = spectraByFileScan.get(key);
-			if(mappedSpectra == null) mappedSpectra = new ArrayList<Spectrum>();
+			if (mappedSpectra == null)
+				mappedSpectra = new ArrayList<Spectrum>();
 			mappedSpectra.add(spectrum);
 			spectraByFileScan.put(key, mappedSpectra);
 
@@ -219,19 +219,21 @@ public class Spectra {
 		}
 
 	}
-	/** 
-	 * How the scan number are read on file by file basis. 
-	 * @param spectrum, String line - file in line 
-	 * @param boolean scanCheck - describe scan number within spectrum
+
+	/**
+	 * How the scan number are read on file by file basis.
+	 * 
+	 * @param spectrum, String line - file in line
+	 * @param boolean   scanCheck - describe scan number within spectrum
 	 * @return void
 	 */
 	private void findScanNum(Spectrum spectrum, String line, boolean scanCheck) {
 
-		if(line.startsWith("TITLE=")) {
+		if (line.startsWith("TITLE=")) {
 			String title = line.split("=")[1];
 			spectrumByTitle.put(title, spectrum);
 		}
-		
+
 		if (line.contains("SCANS") && !line.substring(0, 5).equals("TITLE") && scanCheck == false) { // SCANS=2366
 			String[] tok = line.split("=");
 			spectrum.setScanID(Integer.parseInt(tok[1]));
@@ -255,12 +257,11 @@ public class Spectra {
 		}
 	}
 
-	
-
 	/**
-	 * Initialize spectrum object. 
-	 * @param spectrum object 
-	 * @param boolean scanCheck - describe scan number within spectrum
+	 * Initialize spectrum object.
+	 * 
+	 * @param spectrum object
+	 * @param boolean  scanCheck - describe scan number within spectrum
 	 * @return void
 	 */
 	private void spectrumClear(Spectrum spectrum, boolean scanCheck) {
@@ -273,12 +274,14 @@ public class Spectra {
 		spectrum.setTIC(0);
 		scanCheck = false;
 	}
+
 	/**
-	 * Initialize spectrum object. 
+	 * Initialize spectrum object.
+	 * 
 	 * @param spectrum object
 	 * @return void
 	 */
-	
+
 	private void spectrumClear(Spectrum spectrum) {
 		ArrayList<Peak> peakinfo = new ArrayList<Peak>();
 		spectrum.setMSLevel(0);
@@ -287,77 +290,83 @@ public class Spectra {
 		spectrum.setRT(0);
 		spectrum.setScanID(0);
 		spectrum.setTIC(0);
-		
+
 	}
+
 	/**
-	 * Return the spectrum with the corresponding scan number among all spectra included in the file 
-	 * @param fileName file name 
-	 * @param scanNum scan number  
+	 * Return the spectrum with the corresponding scan number among all spectra
+	 * included in the file
+	 * 
+	 * @param fileName file name
+	 * @param scanNum  scan number
 	 * @return spectrum spectrum object
 	 */
-	
-	public ArrayList<Spectrum> getSpectraByFileScan (String fileName, int scanNum) {
-		String key = fileName+"_"+scanNum;
+
+	public ArrayList<Spectrum> getSpectraByFileScan(String fileName, int scanNum) {
+		String key = fileName + "_" + scanNum;
 		return spectraByFileScan.get(key);
 	}
-	
+
 	/**
 	 * Get the list of processed file names
-	 * @param null 
-	 * @return file names 
+	 * 
+	 * @param null
+	 * @return file names
 	 */
-	
+
 	public String[] getFileNames() {
 		return fileNames;
 	}
 
 	/**
-	 * Set the list of file names 
-	 * @return void  
+	 * Set the list of file names
+	 * 
+	 * @return void
 	 */
-	
+
 	private void setFileNames(String[] fileNames) {
 		this.fileNames = fileNames;
 	}
 
 	/**
-	 * Get file format of processed file names 
+	 * Get file format of processed file names
+	 * 
 	 * @param null
-	 * @return processed file format 
+	 * @return processed file format
 	 */
-	
+
 	public String getFileformat() {
-		
+
 		return fileformat;
 	}
 
-	
 	private void setFileformat(String fileformat) {
 		this.fileformat = fileformat;
 	}
 
-	
 //	private void setSpecList(List<Spectrum> specList) {
 //		this.specList = specList;
 //	}
 
 	/**
-	 * Get the list of spectrum which contains all the spectra in the files  
-	 * @return list of spectrum 
+	 * Get the list of spectrum which contains all the spectra in the files
+	 * 
+	 * @return list of spectrum
 	 */
-	
-	
+
 //	public List<Spectrum> getSpecList() {
 //		return specList;
 //	}
-	
+
 	/**
-	 * Return the spectrum with the corresponding scan title among all spectra included in the file 
-	 * @param title scan title 
+	 * Return the spectrum with the corresponding scan title among all spectra
+	 * included in the file
+	 * 
+	 * @param title scan title
 	 * @return spectrum object
 	 */
-	
-	public Spectrum getSpectrumByTitle (String title) {
+
+	public Spectrum getSpectrumByTitle(String title) {
 		return this.spectrumByTitle.get(title);
 	}
 
