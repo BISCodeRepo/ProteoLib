@@ -75,7 +75,6 @@ public class Spectrum {
 	 * @param threshold  threshold   
 	 * @return List<Peak> including peaks bigger than threshold.
 	 */
-	
 	public List<Peak> filterNoisePeaks(double threshold) {
 		List<Peak> filteredList = new ArrayList<>();
 
@@ -86,7 +85,7 @@ public class Spectrum {
 		}
 		return filteredList;
 	}
-
+	
 	/**
 	 * Extract top N peak List.  (not considering isotope) 
 	 * @param n - number of top N 
