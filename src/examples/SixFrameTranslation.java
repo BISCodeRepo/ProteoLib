@@ -24,7 +24,7 @@ public class SixFrameTranslation {
 		 * 
 		 */
 
-		// 25개의 fasta 파일이 있는 폴더
+		// folder path that has 25 fasta files
 		// INPUT PATH
 		String inputPath = "D:\\GBM\\FASTA\\FASTA";
 		// OUTPUT FILE NAME
