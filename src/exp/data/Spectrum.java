@@ -219,16 +219,16 @@ public class Spectrum {
 		this.title = line;
 	}
 
-	public String getTitle(String line) {
+	public String getTitle() {
 		return this.title;
-	}
-	
-	public void setPepMassInfo(String line) {
-		this.title = line;
 	}
 
-	public String getPepMassInfo(String line) {
-		return this.title;
+	public void setPepMassInfo(String line) {
+		this.PepMassInfo = line;
+	}
+
+	public String getPepMassInfo() {
+		return this.PepMassInfo;
 	}
 
 	/** 

@@ -149,7 +149,12 @@ public class Spectra {
 
 				specList.add(spectrum);
 			} else if (line.contains("TITLE=")) {
-				spectrum.setTitle(line.split(" ")[0].split("=")[1]);
+				String title = "";
+				if (line.contains("File:"))
+					title = line.split(" ")[0].split("=")[1];
+				else
+					title = line.split("=")[1];
+				spectrum.setTitle(title);
 			} else if (line.contains("PEPMASS=")) {
 				spectrum.setPepMassInfo(line.split("=")[1]);
 			} else if (line.contains("RTINSECONDS")) {
