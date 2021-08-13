@@ -10,7 +10,10 @@ public class Codon {
 	private static char ReversedComplementNuclToAminoArray[][][];
 	private static boolean setOkay = false;
 	private static char aminoAcids[] = {'A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y'};
-	
+	/**
+	 * codon for each Amino acids <br>
+	 * such as 'GCT', 'TTA' ...
+	 */
 	private static String nucleotides[][] = {
 			/*A*/ {"GCT", "GCC", "GCA", "GCG"},
 					{},
@@ -40,7 +43,11 @@ public class Codon {
 					{}
 	};
 	
-	
+	/**
+	 * mapping <br>
+	 * Nucleotide acid to Amino acid (forward & reverse) <br>
+	 * Amino acid to Nucleotide acid (forward & reverse) <br>
+	 */
 	private static void mapping() {
 		AminoToNuclArray = new String[26][];
 		NuclToAminoArray = new char[nucleoIndexes][nucleoIndexes][nucleoIndexes];
@@ -92,13 +99,29 @@ public class Codon {
 		setOkay = true;
 	}
 	
-	
+	/**
+	 * 
+	 * arguments: <br>
+	 * nucleotides: DNA sequences such as 'A', 'C', 'T', 'G' <br>
+	 * output: NuclToAminoArray <br>
+	 * 
+	 * @param nucleotides
+	 * @return NuclToAminoArray
+	 */
 	public static Character nuclToAmino (String nucleotides){
 		if(!setOkay) mapping();
 		if(nucleotides.length() != 3) return 'X';
 		return NuclToAminoArray[nucleotides.charAt(0) & 7][nucleotides.charAt(1) & 7][nucleotides.charAt(2) & 7];
 	}
-	
+	/**
+	 * 
+	 * arguments: <br>
+	 * amino: Amino Acids such as 'A','C','D','E','F','G','H','I','K','L','M', ... <br>
+	 * output: AminoToNuclArray <br>
+	 * 
+	 * @param amino
+	 * @return AminoToNuclArray
+	 */
 	public static String[] aminoToNucl (String amino){
 		if(!setOkay) mapping();
 		return AminoToNuclArray[amino.charAt(0)-'A'];
