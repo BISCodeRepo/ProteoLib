@@ -41,11 +41,28 @@ public class Spectra {
 	/**
 	 * list of spectrum 
 	 */
-	public List<Spectrum> specList = new ArrayList<Spectrum>();
+	private List<Spectrum> specList = new ArrayList<Spectrum>();
 	private Hashtable<String, ArrayList<Spectrum>> spectraByFileScan = new Hashtable<String, ArrayList<Spectrum>>();
 	private Hashtable<String, Spectrum> spectrumByTitle = new Hashtable<String,Spectrum>();
 	
 
+	/**
+	 * get spectrum by index. <br>
+	 * 
+	 * outOfIndexBound: return null <br>
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public Spectrum getSpectrumByIndex (int index) {
+		// check index bound.
+		if(index < 0 || this.specList.size() < index) return null;
+		
+		Spectrum spectrum = this.specList.get(index);
+		return spectrum;
+	}
+	
+	
 	/**
 	 * Get the number of spectra in the list of MS scan files 
 	 * 

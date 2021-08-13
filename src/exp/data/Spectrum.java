@@ -92,8 +92,6 @@ public class Spectrum {
 	 * @param n - number of top N 
 	 * @return List<Peak> including top N Peaks. (sorted by descending order)
 	 */
-	
-	
 	public List<Peak> topN(int n) {
 		List<Peak> topList = new ArrayList<>();
 		int num = 0;
