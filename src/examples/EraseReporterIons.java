@@ -24,12 +24,13 @@ public class EraseReporterIons {
 	 * INPUT: a folder including MGF files, labeling protocol
 	 * OUTPUT: a folder including Reporter ion erased MGFs
 	 * 
+	 * label protocol : 0 = iTRAQ 4plex, 1 = iTRAQ 8plex, 2 = TMT 2plex, 3 = TMT 6plex, 4 = TMT 10plex 
 	 **/
 
 	// input mgf dir path, output mgf dir path
 	public static final String INPUTMGFPATH = "D:\\Data\\ProteomeTools\\mgf\\1\\";
 	public static final String OUTPUTMGFPATH = "D:\\Data\\ProteomeTools\\mgf\\RPerasedMGF";
-	public static final int LABELPROTOCOL = 4; // label protocol : 0 = iTRAQ 4plex, 1 = iTRAQ 8plex, 2 = TMT 2plex, 3 = TMT 6plex, 4 = TMT 10plex 
+	public static final int LABELPROTOCOL = 4;
 	public static final double FRAG_TOL = 0.025; // Fragment tolerance
 
 	public static void main(String[] args) throws IOException {

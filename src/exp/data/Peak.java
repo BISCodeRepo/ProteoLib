@@ -34,6 +34,7 @@ public class Peak {
 
 	/**
 	 * return whether this peak can be interpreted as Reporter ion or not
+	 * label protocol : 0 = iTRAQ 4plex, 1 = iTRAQ 8plex, 2 = TMT 2plex, 3 = TMT 6plex, 4 = TMT 10plex 
 	 * 
 	 * @param label protocol index, fragment tolerance
 	 * @return boolean (true = thought as reporter ion)

@@ -379,6 +379,7 @@ public class Spectra {
 
 	/**
 	 * Return reporter ion erased spectra
+	 * label protocol : 0 = iTRAQ 4plex, 1 = iTRAQ 8plex, 2 = TMT 2plex, 3 = TMT 6plex, 4 = TMT 10plex 
 	 * 
 	 * @param label protocol index, fragment tolerance
 	 * @return spectra object
