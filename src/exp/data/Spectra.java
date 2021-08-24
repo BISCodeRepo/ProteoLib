@@ -377,4 +377,26 @@ public class Spectra {
 		return this.spectrumByTitle.get(title);
 	}
 
+	/**
+	 * Return reporter ion erased spectra
+	 * 
+	 * @param label protocol index, fragment tolerance
+	 * @return spectra object
+	 */
+	public Spectra getReporterIonErasedSpectra(int label_protocol, double frag_tol) {
+		for (int i = 0; i < this.getSize(); i++) {
+			Spectrum ions = this.getSpectrumByIndex(i);
+			List<Peak> peaks = ions.getPeakinfo();
+			ArrayList<Peak> reporterIonErasedPeaks = new ArrayList<Peak>();
+			for (Peak peak : peaks) {
+				boolean checkion = peak.checkReporterIon(label_protocol, frag_tol);
+				if (!checkion)
+					reporterIonErasedPeaks.add(peak);
+				else
+					continue;
+			}
+			ions.setPeakinfo(reporterIonErasedPeaks);
+		}
+		return this;
+	}
 }
