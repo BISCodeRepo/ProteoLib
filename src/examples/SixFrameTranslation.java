@@ -17,6 +17,7 @@ import exp.util.Translator;
 public class SixFrameTranslation {
 
 	public static void main(String[] args) throws IOException {
+		
 		/******** Description *********/
 		/**
 		 * INPUT: a folder including fasta files, and each fasta file contains a single header.
@@ -26,7 +27,7 @@ public class SixFrameTranslation {
 
 		// folder path that has 25 fasta files
 		// INPUT PATH
-		String inputPath = "D:\\GBM\\FASTA\\FASTA";
+		String inputPath = "";
 		// OUTPUT FILE NAME
 		String outputPath = "";
 		
@@ -57,6 +58,7 @@ public class SixFrameTranslation {
 					}
 					System.out.println(chromo + ".fa read done");
 					gSeq = sb.toString();
+					Translator.checkOnlyACTGN(gSeq);
 					for (int frame = 0; frame < 3; frame++) {
 						String longSequence = Translator.translation(gSeq, frame, false);
 						long startPosition = 1;

@@ -1,5 +1,7 @@
 package exp.util;
 
+import java.util.ArrayList;
+
 import exp.statics.Codon;
 
 public class Translator {
@@ -89,8 +91,41 @@ public class Translator {
 		
 		nucleotides = reverseComplementNTs.toString();
 		for(int position=frame; position<nucleotides.length()-2; position+=3) {
-			peptides.append(Codon.nuclToAmino(nucleotides.substring(position,position+3)));
+			String inputCodon = nucleotides.substring(position,position+3);
+			peptides.append(Codon.nuclToAmino(inputCodon));
 		}
 		return peptides.toString();
 	}
+	
+	/**
+	 * 
+	 * arguments: <br>
+	 * fastaSeq: DNA sequences of one fasta file <br>
+	 * Notice message will print only when there are other sequences other than 'A', 'T', 'C', 'G', 'N' <br>
+	 * 
+	 * @param fastaSeq
+	 */
+	public static void checkOnlyACTGN(String fastaSeq) {
+		String checkList[] = new String[] {"a","c","t","g","n","A","C","T","G","N"};
+		String error = fastaSeq;
+		ArrayList<String> errorList = new ArrayList<>();
+		for(String i :checkList) {
+			error = error.replaceAll(i, "");
+			}
+		if(error.length()!=0) {
+			String[] errors = error.split("");
+			for(String errorSeq : errors) {
+				if (!errorList.contains(errorSeq)) {
+					errorList.add(errorSeq);
+				}
+			}
+			System.out.println("Wrong fasta sequence is in your fasta file");
+			System.out.print("Wrong sequence : ");
+			for(String errorSeq: errorList) {
+				System.out.print(errorSeq+" ");
+			}
+			System.out.println();
+			System.out.println("We treated codon that contains error sequence as 'X'");
+		}
+		}
 }
